@@ -10,6 +10,10 @@ if (args.length <= 2) {
 }
 const LOGIN = args[2]
 const PASSWORD = args[3]
+let DOWNLOAD_PATH = CONFIG.DOWNLOAD_PATH
+if (5 === args.length) {
+    DOWNLOAD_PATH = args[4]
+}
 //end region
 
 const photoTest = new RegExp('photo_');
@@ -49,7 +53,7 @@ const downloadPhotos = function(photos) {
         let url = photos.shift()
         console.log(`${photos.length} photos left to download`)
         download
-                .image({ url , dest: CONFIG.DOWNLOAD_PATH })
+                .image({ url , dest: DOWNLOAD_PATH })
                 .then(() => {
                     console.log(`${url} was saved`)
                     if (!photos.length) {
@@ -74,7 +78,8 @@ VK.auth.user({ scope: ['photos'] })
 .then(token => loadAllPhotos(token.user_id))
 .then(getUrls)
 .then(photos => {
-    console.log(`==== Count: ${photos.length} === `)
+    console.log(`==== Count: ${photos.length} ====`)
+    console.log(`==== Download path is ${DOWNLOAD_PATH} ====`)
     return photos
 })
 .then(downloadPhotos)
