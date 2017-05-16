@@ -2,6 +2,16 @@ const VKApi = require('node-vkapi');
 const download = require('image-downloader')
 const CONFIG = require('./config')
 
+//region take login and password fom cli arguments
+const args = process.argv;
+if (args.length <= 2) {
+    console.error('You should write login and password')
+    return
+}
+const LOGIN = args[2]
+const PASSWORD = args[3]
+//end region
+
 const photoTest = new RegExp('photo_');
 
 const loadPhotos = (id, offset = 0, count = 200)  => VK.call('photos.getAll', { owner_id: id, extended: 0, offset, count })
@@ -37,6 +47,7 @@ const loadAllPhotos = function(tokenID = null, offset = 0, userPhotosArr = []) {
 const downloadPhotos = function(photos) {
     return new Promise(function(resolve, reject) {
         let url = photos.shift()
+        console.log(`${photos.length} photos left to download`)
         download
                 .image({ url , dest: CONFIG.DOWNLOAD_PATH })
                 .then(() => {
@@ -55,7 +66,10 @@ const downloadPhotos = function(photos) {
     })
 }
 
-const VK = new VKApi({ app: CONFIG.app, auth: CONFIG.auth })
+const VK = new VKApi({
+    app: CONFIG.app,
+    auth: { login: LOGIN, pass: PASSWORD }
+})
 VK.auth.user({ scope: ['photos'] })
 .then(token => loadAllPhotos(token.user_id))
 .then(getUrls)

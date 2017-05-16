@@ -3,9 +3,5 @@
         "id": 6034039,
         "secret": "05Gb1jgZ2LV7pp3DgRfP"
     },
-    "auth": {
-        "login": "write your login",
-        "pass": "write your password"
-    },
-    "DOWNLOAD_PATH": "write absolute path to the folder"
+    "DOWNLOAD_PATH": "/Users/kbarabash/Downloads/vk/test1"
 }
