@@ -37,6 +37,7 @@ const loadAllPhotos = function(tokenID = null, offset = 0, userPhotosArr = []) {
 const downloadPhotos = function(photos) {
     return new Promise(function(resolve, reject) {
         let url = photos.shift()
+        console.log(`${photos.length} photos left to download`)
         download
                 .image({ url , dest: CONFIG.DOWNLOAD_PATH })
                 .then(() => {
